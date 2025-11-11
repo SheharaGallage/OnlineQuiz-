@@ -1,1 +1,40 @@
-<!--empty imalsha-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Take Test</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-box">
+            <div class="header">
+                <h1>📝 Network Programming Quiz</h1>
+                <div class="user-info">
+                    <span id="username-display"></span>
+                    <button onclick="logout()" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+            
+            <div class="timer-display" id="timer">
+                <span>⏱️ Time Remaining: <strong id="time-remaining">--:--</strong></span>
+            </div>
+            
+            <div id="quiz-container">
+                <button onclick="startQuiz()" class="btn-primary btn-large">Start Quiz</button>
+            </div>
+            
+            <div id="quiz-questions" style="display: none;">
+                <div id="questions-list"></div>
+                <button onclick="submitQuiz()" class="btn-success btn-large">Submit Answers</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/storage.js"></script>
+    <script src="js/client.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>
+
