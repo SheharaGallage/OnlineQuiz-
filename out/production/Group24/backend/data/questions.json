@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "question": "What does TCP stand for?",
+    "options": ["Transfer Control Protocol", "Transmission Control Protocol", "Transport Control Protocol", "Transcription Control Protocol"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 2,
+    "question": "Which port does HTTP use by default?",
+    "options": ["21", "22", "80", "443"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 3,
+    "question": "What is the main advantage of UDP over TCP?",
+    "options": ["Reliability", "Speed", "Security", "Error checking"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 4,
+    "question": "Which Java class is used for socket programming?",
+    "options": ["Socket", "Connection", "Network", "Link"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 5,
+    "question": "What does NIO stand for in Java?",
+    "options": ["Network Input Output", "New Input Output", "Node Input Output", "Next Input Output"],
+    "correctAnswer": 1
+  }
+]
