@@ -413,6 +413,4 @@ Your project is working correctly if:
 
 ---
 
-**Good luck with your assignment! 🚀**
 
-**Submission Deadline:** 12-Nov-2025 11:59 p.m.
