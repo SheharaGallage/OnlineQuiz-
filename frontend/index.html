@@ -1,69 +1,76 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz System - Login</title>
+    <title>Quiz Results</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="login-box">
-            <h1>📚 Online Quiz System</h1>
-            <p class="subtitle">Network Programming Assignment</p>
+        <div class="results-box">
+            <h1>🎯 Quiz Results</h1>
             
-            <div class="login-form">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="username" placeholder="Enter username" value="student1">
+            <div class="result-card">
+                <div class="score-display">
+                    <h2>Your Score</h2>
+                    <div class="score-circle">
+                        <span id="score" class="score-number">0</span>
+                        <span class="score-total">/ <span id="total">0</span></span>
+                    </div>
+                    <p class="percentage" id="percentage">0%</p>
                 </div>
                 
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" placeholder="Enter password" value="pass123">
+                <div class="result-details">
+                    <p><strong>Username:</strong> <span id="username"></span></p>
+                    <p><strong>Date:</strong> <span id="date"></span></p>
+                    <p><strong>Status:</strong> <span id="status" class="status-badge">Completed</span></p>
                 </div>
-                
-                <button onclick="login()" class="btn-primary">Login</button>
-                
-                <div id="message" class="message"></div>
-                
-                <div class="info-box">
-                    <p><strong>Default Credentials:</strong></p>
-                    <p>Username: student1 to student5</p>
-                    <p>Password: pass123</p>
-                </div>
+            </div>
+            
+            <div class="actions">
+                <button onclick="location.href='quiz.html'" class="btn-primary">Take Quiz Again</button>
+                <button onclick="logout()" class="btn-secondary">Logout</button>
             </div>
         </div>
     </div>
     
     <script src="js/storage.js"></script>
-    <script src="js/client.js"></script>
     <script>
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // Load and display results
+        window.onload = function() {
+            const result = getLastResult();
+            const session = getUserSession();
             
-            if (!username || !password) {
-                showMessage('Please enter username and password', 'error');
-                return;
+            if (result) {
+                document.getElementById('score').textContent = result.score;
+                document.getElementById('total').textContent = result.total;
+                document.getElementById('percentage').textContent = result.percentage.toFixed(1) + '%';
+                document.getElementById('username').textContent = session.username;
+                document.getElementById('date').textContent = new Date(result.timestamp).toLocaleString();
+                
+                // Set status based on percentage
+                const statusElem = document.getElementById('status');
+                if (result.percentage >= 80) {
+                    statusElem.textContent = 'Excellent! 🌟';
+                    statusElem.className = 'status-badge status-excellent';
+                } else if (result.percentage >= 60) {
+                    statusElem.textContent = 'Good! 👍';
+                    statusElem.className = 'status-badge status-good';
+                } else {
+                    statusElem.textContent = 'Keep Practicing 💪';
+                    statusElem.className = 'status-badge status-practice';
+                }
+            } else {
+                location.href = 'quiz.html';
             }
-            
-            showMessage('Connecting to server...', 'info');
-            client.login(username, password);
-        }
+        };
         
-        function showMessage(msg, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = msg;
-            messageDiv.className = 'message ' + type;
+        function logout() {
+            clearStorage();
+            location.href = 'index.html';
         }
-        
-        // Allow Enter key to login
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
-        });
     </script>
 </body>
 </html>
