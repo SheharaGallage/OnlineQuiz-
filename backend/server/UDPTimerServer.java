@@ -2,12 +2,14 @@ package server;
 
 import java.net.*;
 import java.io.IOException;
+import java.util.*;
 
 public class UDPTimerServer implements Runnable {
     private static final int UDP_PORT = 9999;
     private DatagramSocket socket;
     private boolean isRunning = false;
     private int timeRemaining = 0;
+    private List<ClientHandler> clients = new ArrayList<>();
 
     public UDPTimerServer() {
         try {
@@ -15,6 +17,18 @@ public class UDPTimerServer implements Runnable {
             System.out.println("UDP Timer Server started on port " + UDP_PORT);
         } catch (Exception e) {
             System.err.println("UDP Timer error: " + e.getMessage());
+        }
+    }
+
+    public void addClient(ClientHandler client) {
+        synchronized (clients) {
+            clients.add(client);
+        }
+    }
+
+    public void removeClient(ClientHandler client) {
+        synchronized (clients) {
+            clients.remove(client);
         }
     }
 
@@ -26,6 +40,7 @@ public class UDPTimerServer implements Runnable {
             try {
                 if (timeRemaining > 0) {
                     broadcastTime();
+                    notifyWebSocketClients();
                     timeRemaining--;
                     Thread.sleep(1000); // Wait 1 second
                 } else {
@@ -59,6 +74,19 @@ public class UDPTimerServer implements Runnable {
         }
     }
 
+    private void notifyWebSocketClients() {
+        synchronized (clients) {
+            String message = "{\"type\":\"TIMER_UPDATE\",\"timeRemaining\":" + timeRemaining + "}";
+            for (ClientHandler client : clients) {
+                try {
+                    client.sendMessage(message);
+                } catch (Exception e) {
+                    // Client may have disconnected, ignore
+                }
+            }
+        }
+    }
+
     public void stop() {
         isRunning = false;
         if (socket != null) {
@@ -66,10 +94,3 @@ public class UDPTimerServer implements Runnable {
         }
     }
 }
-
-
-
-
-
-
-

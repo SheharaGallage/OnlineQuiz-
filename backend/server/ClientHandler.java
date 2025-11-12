@@ -30,6 +30,9 @@ public class ClientHandler implements Runnable {
                 return;
             }
 
+            // Register with timer server to receive updates
+            timerServer.addClient(this);
+
             String message;
             while ((message = readWebSocketMessage()) != null) {
                 if (message.isEmpty())
@@ -337,6 +340,7 @@ public class ClientHandler implements Runnable {
             if (userId != null) {
                 QuizServer.removeClient(userId);
             }
+            timerServer.removeClient(this);
             socket.close();
             System.out.println("Client disconnected: " + userId);
         } catch (IOException e) {
